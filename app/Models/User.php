@@ -3,7 +3,7 @@
 namespace App\Models;
 
 
-use Laravel\Passport\hasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
