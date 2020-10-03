@@ -29,7 +29,7 @@ Route::namespace('Api')->group(function(){
         'middleware'=>'auth:api'
     ], function(){
 
-        Route::get('helloworld', [AuthController::class,'index']);
+        Route::get('user', [AuthController::class,'index']);
         Route::post('logout', [AuthController::class,'logout']);
     });
 
