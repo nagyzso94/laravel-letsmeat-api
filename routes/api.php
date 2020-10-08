@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RestaurantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,18 @@ use App\Http\Controllers\Api\AuthController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+//Route::resource('restaurants', RestaurantController::class);
+
+Route::prefix('restaurants')->group(function(){
+
+    Route::get('', [RestaurantController::class, 'index']);
+    Route::get('/show/{id}', [RestaurantController::class, 'show']);
+    Route::post('/create', [RestaurantController::class, 'create']);
+    Route::put('/update/{id}', [RestaurantController::class, 'update']);
+    Route::delete('/delete/{id}', [RestaurantController::class,'destroy']);
+
+});
 
 Route::namespace('Api')->group(function(){
 
@@ -31,6 +44,7 @@ Route::namespace('Api')->group(function(){
 
         Route::get('user', [AuthController::class,'index']);
         Route::post('logout', [AuthController::class,'logout']);
+
     });
 
 });
