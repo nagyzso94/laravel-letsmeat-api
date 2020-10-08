@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RestaurantController;
+use App\Http\Controllers\Api\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,19 @@ use App\Http\Controllers\Api\RestaurantController;
 |
 */
 
-//Route::resource('restaurants', RestaurantController::class);
+//Route::resource('reviews', ReviewController::class);
+Route::prefix('reviews')->group(function(){
+    Route::get('', [ReviewController::class, 'index']);
+    Route::get('/show/{id}', [ReviewController::class, 'show']);
+    Route::post('/create', [ReviewController::class, 'create']);
+    Route::put('/update/{id}', [ReviewController::class, 'update']);
+    Route::delete('/delete/{id}', [ReviewController::class,'destroy']);
+
+    Route::get('blaa',[ReviewController::class, 'bla']);
+
+});
 
 Route::prefix('restaurants')->group(function(){
-
     Route::get('', [RestaurantController::class, 'index']);
     Route::get('/show/{id}', [RestaurantController::class, 'show']);
     Route::post('/create', [RestaurantController::class, 'create']);
@@ -28,6 +38,7 @@ Route::prefix('restaurants')->group(function(){
     Route::delete('/delete/{id}', [RestaurantController::class,'destroy']);
 
 });
+
 
 Route::namespace('Api')->group(function(){
 

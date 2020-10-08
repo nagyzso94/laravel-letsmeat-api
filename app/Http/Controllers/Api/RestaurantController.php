@@ -18,7 +18,7 @@ class RestaurantController extends Controller
     {
         $restaurant = new Restaurant([
           'name' => $request->name,
-          'address_id' => $request->address_id,
+          'address' => $request->address,
           'phone_number' => $request->phone_number,
           'web_page' => $request->web_page
         ]);
