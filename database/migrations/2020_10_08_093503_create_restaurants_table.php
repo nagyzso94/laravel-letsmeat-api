@@ -19,6 +19,7 @@ class CreateRestaurantsTable extends Migration
             $table->string('address');
             $table->string('phone_number');
             $table->string('web_page')->nullable();
+            $table->tinyInteger('type');
             $table->timestamps();
         });
     }

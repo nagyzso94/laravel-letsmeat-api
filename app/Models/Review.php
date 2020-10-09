@@ -18,4 +18,20 @@ class Review extends Model
       'cleanness',
       'other_aspect'
     ];
+
+
+
+    // Get the user which belongs to the review
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    // Get the restaurant which belongs to the review
+    public function restaurant()
+    {
+        return $this->belongsTo('App\Models\Restaurant');
+    }
+
+
 }

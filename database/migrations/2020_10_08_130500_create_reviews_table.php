@@ -13,19 +13,37 @@ class CreateReviewsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('reviews');
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');;
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');;
             $table->tinyInteger('savouriness');
             $table->tinyInteger('prices');
             $table->tinyInteger('service');
             $table->tinyInteger('cleanness');
             $table->string('other_aspect');
             $table->timestamps();
-
-
+            $table->foreignId('restaurant_id')
+                  ->constrained()
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
+            $table->foreignId('user_id')
+                  ->constrained()
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
         });
+
+        // Foreign keys
+/*        Schema::table('reviews', function (Blueprint $table) {
+          $table->foreignId('restaurant_id')
+                ->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+          $table->foreignId('user_id')
+                ->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+*/
     }
 
     /**

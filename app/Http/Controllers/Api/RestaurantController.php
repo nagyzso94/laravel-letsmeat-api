@@ -20,13 +20,15 @@ class RestaurantController extends Controller
           'name' => $request->name,
           'address' => $request->address,
           'phone_number' => $request->phone_number,
-          'web_page' => $request->web_page
+          'web_page' => $request->web_page,
+          'type' => $request->type
         ]);
 
         $request->validate([
             'name' => 'required|string|unique:restaurants|max:20',
             'phone_number' => 'required|string|max:13',
-            'web_page' => 'required|string|unique:restaurants'
+            'web_page' => 'required|string|unique:restaurants',
+            'type' => 'required'
         ]);
 
         $restaurant->save();

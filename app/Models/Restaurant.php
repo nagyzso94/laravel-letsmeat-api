@@ -13,8 +13,14 @@ class Restaurant extends Model
       'name',
       'address',
       'phone_number',
-      'web_page'
+      'web_page',
+      'type'
     ];
 
+    //Get the reviews for the restaurant
+    public function reviews()
+    {
+        return $this->hasMany('App\Models\Review');
+    }
 
 }

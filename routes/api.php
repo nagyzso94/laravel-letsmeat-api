@@ -25,9 +25,6 @@ Route::prefix('reviews')->group(function(){
     Route::post('/create', [ReviewController::class, 'create']);
     Route::put('/update/{id}', [ReviewController::class, 'update']);
     Route::delete('/delete/{id}', [ReviewController::class,'destroy']);
-
-    Route::get('blaa',[ReviewController::class, 'bla']);
-
 });
 
 Route::prefix('restaurants')->group(function(){
