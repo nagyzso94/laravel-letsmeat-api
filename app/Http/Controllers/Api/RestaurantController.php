@@ -13,7 +13,6 @@ class RestaurantController extends Controller
         return Restaurant::all();
     }
 
-    // CREATE
     public function create(Request $request)
     {
         $restaurant = new Restaurant([

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -40,7 +40,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
-        
+
         $user = new User([
             'name'=>$request->name,
             'email'=>$request->email,
@@ -55,7 +55,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        $request->user()->token()->revoke(); 
+        $request->user()->token()->revoke();
         return response()->json([
             "message"=>"User logged out successfully"
         ], 200);

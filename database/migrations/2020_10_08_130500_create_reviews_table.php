@@ -32,18 +32,6 @@ class CreateReviewsTable extends Migration
                   ->onUpdate('cascade');
         });
 
-        // Foreign keys
-/*        Schema::table('reviews', function (Blueprint $table) {
-          $table->foreignId('restaurant_id')
-                ->constrained()
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-          $table->foreignId('user_id')
-                ->constrained()
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
-*/
     }
 
     /**

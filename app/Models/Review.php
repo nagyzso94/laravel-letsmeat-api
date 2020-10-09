@@ -19,8 +19,6 @@ class Review extends Model
       'other_aspect'
     ];
 
-
-
     // Get the user which belongs to the review
     public function user()
     {
@@ -32,6 +30,4 @@ class Review extends Model
     {
         return $this->belongsTo('App\Models\Restaurant');
     }
-
-
 }

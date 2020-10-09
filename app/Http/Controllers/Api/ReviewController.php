@@ -21,8 +21,6 @@ class ReviewController extends Controller
     {
 
       $review = new Review([
-        //'restaurant_id'=> $request->restaurant_id,
-        //'user_id'=> $request->user_id,
         'savouriness'=> $request->savouriness,
         'prices'=> $request->prices,
         'service'=> $request->service,
