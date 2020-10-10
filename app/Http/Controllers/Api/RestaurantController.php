@@ -28,6 +28,7 @@ class RestaurantController extends Controller
             'phone_number' => 'required|string|max:13',
             'web_page' => 'required|string|unique:restaurants',
             'type' => 'required'
+            'address' => 'required|string|unique:restaurants'
         ]);
 
         $restaurant->save();
