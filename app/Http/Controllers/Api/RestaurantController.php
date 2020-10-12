@@ -25,13 +25,21 @@ class RestaurantController extends Controller
 
         $request->validate([
             'name' => 'required|string|unique:restaurants|max:20',
-            'phone_number' => 'required|string|max:13',
-            'web_page' => 'required|string|unique:restaurants',
-            'type' => 'required'
-            'address' => 'required|string|unique:restaurants'
+            'web_page' => 'required|string|unique:restaurants|active_url',
+            'type' => 'required',
+            'address' => 'required|string|unique:restaurants',
+            'phone_number' => [
+              'required',
+              'string',
+              'max:13',
+              'regex:/((?:\+?3|0)6)(?:-|\()?(\d{1,2})(?:-|\))?(\d{3})-?(\d{3,4})/']
         ]);
 
         $restaurant->save();
+
+      //  return response()->json([
+      //      "restaurant"=>$restaurant
+      //  ], 201);
 
         return response()->json([
             "message" => "Restaurant saved successfully"
