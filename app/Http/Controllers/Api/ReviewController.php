@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\Restaurant;
@@ -55,7 +56,19 @@ class ReviewController extends Controller
 
     public function show($id)
     {
-        return Review::find($id);
+        return DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> get();
+    }
+
+
+    public function showuser($id)
+    {
+        $userReviews = DB::table('reviews')
+          -> where('user_id','=',$id)
+          -> get();
+
+        return $userReviews;
     }
 
     public function update(Request $request, $id)
@@ -69,4 +82,32 @@ class ReviewController extends Controller
     {
         return Review::destroy($id);
     }
+
+    public function statistics($id)
+    {
+        $savouriness_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('savouriness');
+
+        $prices_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('prices');
+
+        $service_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('service');
+
+        $cleanness_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('cleanness');
+
+        return response()->json([
+          'savouriness' => $savouriness_avg,
+          'prices' => $prices_avg,
+          'service' => $prices_avg,
+          'cleanness' => $cleanness_avg]);
+
+    }
+
+
 }
