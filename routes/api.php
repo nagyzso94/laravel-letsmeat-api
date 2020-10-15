@@ -27,7 +27,6 @@ Route::prefix('reviews')->group(function(){
     Route::delete('/delete/{id}', [ReviewController::class,'destroy']);
     Route::get('/statistics/{id}', [ReviewController::class, 'statistics']);
     Route::get('/show/user/{id}', [ReviewController::class, 'showuser']);
-
 });
 
 Route::prefix('restaurants')->group(function(){

@@ -57,8 +57,11 @@ class ReviewController extends Controller
     public function show($id)
     {
         return DB::table('reviews')
-          -> where('restaurant_id','=',$id)
-          -> get();
+                    ->join('users', 'users.id', '=', 'reviews.user_id')
+                    ->join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
+                    ->select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
+                    ->where('restaurant_id','=',$id)
+                    ->get();
     }
 
 
@@ -66,6 +69,9 @@ class ReviewController extends Controller
     {
         $userReviews = DB::table('reviews')
           -> where('user_id','=',$id)
+          -> join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
+          -> join('users', 'users.id', '=', 'reviews.user_id')
+          -> select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
           -> get();
 
         return $userReviews;
@@ -102,10 +108,10 @@ class ReviewController extends Controller
           -> avg('cleanness');
 
         return response()->json([
-          'savouriness' => $savouriness_avg,
-          'prices' => $prices_avg,
-          'service' => $prices_avg,
-          'cleanness' => $cleanness_avg]);
+          'savouriness' => (float)$savouriness_avg,
+          'prices' => (float)$prices_avg,
+          'service' => (float)$prices_avg,
+          'cleanness' => (float)$cleanness_avg]);
 
     }
 
