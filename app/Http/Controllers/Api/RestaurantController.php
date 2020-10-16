@@ -15,24 +15,24 @@ class RestaurantController extends Controller
 
     public function create(Request $request)
     {
+      $request->validate([
+          'name' => 'required|string|unique:restaurants|max:20',
+          'web_page' => 'required|string|unique:restaurants|active_url',
+          'type' => 'required',
+          'address' => 'required|string|unique:restaurants',
+          'phone_number' => [
+            'required',
+            'string',
+            'max:13',
+            'regex:/((?:\+?3|0)6)(?:-|\()?(\d{1,2})(?:-|\))?(\d{3})-?(\d{3,4})/']
+      ]);
+
         $restaurant = new Restaurant([
           'name' => $request->name,
           'address' => $request->address,
           'phone_number' => $request->phone_number,
           'web_page' => $request->web_page,
           'type' => $request->type
-        ]);
-
-        $request->validate([
-            'name' => 'required|string|unique:restaurants|max:20',
-            'web_page' => 'required|string|unique:restaurants|active_url',
-            'type' => 'required',
-            'address' => 'required|string|unique:restaurants',
-            'phone_number' => [
-              'required',
-              'string',
-              'max:13',
-              'regex:/((?:\+?3|0)6)(?:-|\()?(\d{1,2})(?:-|\))?(\d{3})-?(\d{3,4})/']
         ]);
 
         $restaurant->save();

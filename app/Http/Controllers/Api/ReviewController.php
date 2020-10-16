@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\Auth;
+use App\Helpers\ApiHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Review;
@@ -35,46 +36,53 @@ class ReviewController extends Controller
       $restaurant = Restaurant::findOrFail($request->restaurant_id);
       $review->restaurant()->associate($restaurant);
 
-      $request->validate([
-          'restaurant_id'=> 'required',
-          'user_id'=> 'required',
-          'savouriness' => 'required|min:0|max:5',
-          'prices' => 'required|min:0|max:5',
-          'service' => 'required|min:0|max:5',
-          'cleanness' => 'required|min:0|max:5',
-          'other_aspect' => 'required|string|max:100'
+      $request -> validate([
+          'restaurant_id'=> ['required'],
+          'user_id'=> ['required'],
+          'savouriness' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'prices' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'service' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'cleanness' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'other_aspect' => ['string','max:100','nullable']
       ]);
 
-      $review->save();
+      $review_save = $review->save();
 
-      return response()->json([
-          "message" => "Restaurant saved successfully",
-          "user" => $user,
-          "étterem" => $restaurant
-      ], 201);
+      if ($review_save) {
+        $response = ApiHelpers::createApiResponse(false,201,'Review added successfully', null);
+        return response()->json($response,200);
+      } else {
+        $response = ApiHelpers::createApiResponse(true,400,'Review creating failed', null);
+        return response()->json($response,400);
+      }
+
+
+  //    return response()->json([
+  //        "message" => "Review saved successfully",
+  //        "code" => 201,
+  //        "data" => $review
+  //    ], 201);
     }
 
     public function show($id)
     {
         return DB::table('reviews')
-                    ->join('users', 'users.id', '=', 'reviews.user_id')
-                    ->join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
-                    ->select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
-                    ->where('restaurant_id','=',$id)
-                    ->get();
+          ->join('users', 'users.id', '=', 'reviews.user_id')
+          ->join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
+          ->select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
+          ->where('restaurant_id','=',$id)
+          ->get();
     }
 
 
     public function showuser($id)
     {
-        $userReviews = DB::table('reviews')
+        return DB::table('reviews')
           -> where('user_id','=',$id)
           -> join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
           -> join('users', 'users.id', '=', 'reviews.user_id')
           -> select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
           -> get();
-
-        return $userReviews;
     }
 
     public function update(Request $request, $id)
