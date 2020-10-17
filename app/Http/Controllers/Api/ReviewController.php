@@ -22,6 +22,16 @@ class ReviewController extends Controller
     public function create(Request $request)
     {
 
+      $request_validate = $request -> validate([
+          'restaurant_id'=> ['required'],
+          'user_id'=> ['required'],
+          'savouriness' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'prices' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'service' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'cleanness' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
+          'other_aspect' => ['string','max:100','nullable']
+      ]);
+
       $review = new Review([
         'savouriness'=> $request->savouriness,
         'prices'=> $request->prices,
@@ -36,32 +46,22 @@ class ReviewController extends Controller
       $restaurant = Restaurant::findOrFail($request->restaurant_id);
       $review->restaurant()->associate($restaurant);
 
-      $request -> validate([
-          'restaurant_id'=> ['required'],
-          'user_id'=> ['required'],
-          'savouriness' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
-          'prices' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
-          'service' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
-          'cleanness' => ['required', 'regex:/^(([0-4]?(\.|\,)[0-9]+[0-9]*)|(5?(\.|\,)[0]+[0]*))$/'],
-          'other_aspect' => ['string','max:100','nullable']
-      ]);
-
       $review_save = $review->save();
 
-      if ($review_save) {
+  /*    if ($review_save) {
         $response = ApiHelpers::createApiResponse(false,201,'Review added successfully', null);
         return response()->json($response,200);
       } else {
+
         $response = ApiHelpers::createApiResponse(true,400,'Review creating failed', null);
         return response()->json($response,400);
-      }
+      }*/
 
-
-  //    return response()->json([
-  //        "message" => "Review saved successfully",
-  //        "code" => 201,
-  //        "data" => $review
-  //    ], 201);
+      return response()->json([
+          "message" => "Review saved successfully",
+          "code" => 201,
+          "data" => $review
+      ], 201);
     }
 
     public function show($id)
@@ -71,6 +71,7 @@ class ReviewController extends Controller
           ->join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
           ->select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
           ->where('restaurant_id','=',$id)
+          -> orderByDesc('reviews.id')
           ->get();
     }
 
@@ -82,6 +83,7 @@ class ReviewController extends Controller
           -> join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
           -> join('users', 'users.id', '=', 'reviews.user_id')
           -> select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
+          -> orderByDesc('reviews.id')
           -> get();
     }
 

@@ -18,26 +18,7 @@ use App\Http\Controllers\Api\ReviewController;
 |
 */
 
-//Route::resource('reviews', ReviewController::class);
-Route::prefix('reviews')->group(function(){
-    Route::get('', [ReviewController::class, 'index']);
-    Route::get('/show/{id}', [ReviewController::class, 'show']);
-    Route::post('/create', [ReviewController::class, 'create']);
-    Route::put('/update/{id}', [ReviewController::class, 'update']);
-    Route::delete('/delete/{id}', [ReviewController::class,'destroy']);
-    Route::get('/statistics/{id}', [ReviewController::class, 'statistics']);
-    Route::get('/show/user/{id}', [ReviewController::class, 'showuser']);
-});
-
-Route::prefix('restaurants')->group(function(){
-    Route::get('', [RestaurantController::class, 'index']);
-    Route::get('/show/{id}', [RestaurantController::class, 'show']);
-    Route::post('/create', [RestaurantController::class, 'create']);
-    Route::put('/update/{id}', [RestaurantController::class, 'update']);
-    Route::delete('/delete/{id}', [RestaurantController::class,'destroy']);
-
-});
-
+//Route::resource('reviews', ReviewController::class)
 
 Route::namespace('Api')->group(function(){
 
@@ -54,6 +35,24 @@ Route::namespace('Api')->group(function(){
 
         Route::get('user', [AuthController::class,'index']);
         Route::post('logout', [AuthController::class,'logout']);
+
+        Route::prefix('reviews')->group(function(){
+            Route::get('', [ReviewController::class, 'index']);
+            Route::get('/show/{id}', [ReviewController::class, 'show']);
+            Route::post('/create', [ReviewController::class, 'create']);
+            Route::put('/update/{id}', [ReviewController::class, 'update']);
+            Route::delete('/delete/{id}', [ReviewController::class,'destroy']);
+            Route::get('/statistics/{id}', [ReviewController::class, 'statistics']);
+            Route::get('/show/user/{id}', [ReviewController::class, 'showuser']);
+        });
+
+        Route::prefix('restaurants')->group(function(){
+            Route::get('', [RestaurantController::class, 'index']);
+            Route::get('/show/{id}', [RestaurantController::class, 'show']);
+            Route::post('/create', [RestaurantController::class, 'create']);
+            Route::put('/update/{id}', [RestaurantController::class, 'update']);
+            Route::delete('/delete/{id}', [RestaurantController::class,'destroy']);
+        });
 
     });
 
