@@ -22,11 +22,6 @@ class RestaurantController extends Controller
         ->select('restaurant_id',DB::raw('count(*) as count'))
         ->groupBy('restaurant_id')
         ->get();
-
-  /*      $result = DB::table('restaurant')
-                ->joinSub($numColumn, 'num_column', function ($join) {
-                    $join->on('restaurant.id', '=', 'num_column.restaurant_id');
-                })->get();*/
     }
 
     public function create(Request $request)
@@ -52,10 +47,6 @@ class RestaurantController extends Controller
         ]);
 
         $restaurant->save();
-
-      //  return response()->json([
-      //      "restaurant"=>$restaurant
-      //  ], 201);
 
         return response()->json([
             "message" => "Restaurant saved successfully"
