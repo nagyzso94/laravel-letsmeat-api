@@ -67,12 +67,12 @@ class ReviewController extends Controller
     public function show($id)
     {
         return DB::table('reviews')
-          ->join('users', 'users.id', '=', 'reviews.user_id')
-          ->join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
-          ->select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
-          ->where('restaurant_id','=',$id)
+          -> join('users', 'users.id', '=', 'reviews.user_id')
+          -> join('restaurants', 'restaurants.id', '=', 'reviews.restaurant_id')
+          -> select('reviews.savouriness','reviews.prices','reviews.service','reviews.cleanness','reviews.other_aspect', 'users.name as userName','users.id as userId', 'restaurants.name as restaurantName','restaurants.id as restaurantId')
+          -> where('restaurant_id','=',$id)
           -> orderByDesc('reviews.id')
-          ->get();
+          -> get();
     }
 
 

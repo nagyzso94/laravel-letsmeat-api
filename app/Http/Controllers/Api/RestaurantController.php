@@ -13,8 +13,20 @@ class RestaurantController extends Controller
 {
     public function index()
     {
-        //$review_number = DB::table(reviews)->where('restaurant_id','=',$id)->count();
         return Restaurant::all();
+    }
+
+    public function reviewcount()
+    {
+      return DB::table('reviews')
+        ->select('restaurant_id',DB::raw('count(*) as count'))
+        ->groupBy('restaurant_id')
+        ->get();
+
+  /*      $result = DB::table('restaurant')
+                ->joinSub($numColumn, 'num_column', function ($join) {
+                    $join->on('restaurant.id', '=', 'num_column.restaurant_id');
+                })->get();*/
     }
 
     public function create(Request $request)

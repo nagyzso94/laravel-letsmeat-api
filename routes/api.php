@@ -48,6 +48,7 @@ Route::namespace('Api')->group(function(){
 
         Route::prefix('restaurants')->group(function(){
             Route::get('', [RestaurantController::class, 'index']);
+            Route::get('reviewcount', [RestaurantController::class, 'reviewcount']);
             Route::get('/show/{id}', [RestaurantController::class, 'show']);
             Route::post('/create', [RestaurantController::class, 'create']);
             Route::put('/update/{id}', [RestaurantController::class, 'update']);
