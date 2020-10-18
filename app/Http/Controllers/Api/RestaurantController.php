@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Restaurant;
+use App\Models\Review;
+use App\Models\User;
 
 class RestaurantController extends Controller
 {
     public function index()
     {
+        //$review_number = DB::table(reviews)->where('restaurant_id','=',$id)->count();
         return Restaurant::all();
     }
 
@@ -49,7 +53,35 @@ class RestaurantController extends Controller
 
     public function show($id)
     {
-        return Restaurant::find($id);
+        $restaurant = Restaurant::find($id);
+
+        $savouriness_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('savouriness');
+
+        $prices_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('prices');
+
+        $service_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('service');
+
+        $cleanness_avg = DB::table('reviews')
+          -> where('restaurant_id','=',$id)
+          -> avg('cleanness');
+
+        $avg_review = array(
+          'savouriness' => (float)$savouriness_avg,
+          'prices' => (float)$prices_avg,
+          'service' => (float)$prices_avg,
+          'cleanness' => (float)$cleanness_avg
+          );
+
+        return response()->json([
+          'restaurant' => $restaurant,
+          'avg_review' => $avg_review
+          ]);
     }
 
 
