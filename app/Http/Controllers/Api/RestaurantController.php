@@ -27,10 +27,10 @@ class RestaurantController extends Controller
     public function create(Request $request)
     {
       $request->validate([
-          'name' => 'required|string|unique:restaurants|max:20',
+          'name' => 'required|string|unique:restaurants|max:20|min:2',
           'web_page' => 'required|string|unique:restaurants|active_url',
           'type' => 'required',
-          'address' => 'required|string|unique:restaurants',
+          'address' => 'required|string|min:2|unique:restaurants',
           'phone_number' => [
             'required',
             'string',
